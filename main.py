@@ -51,7 +51,7 @@ def cur_time(bot, update):
 def server_time(bot, update):
     tmp_time = round( time.time() - start_time, 4 )
     print('\server_time')
-    print('>    ' + tmp_time + '  seconds')
+    print('>    ' + tmp_time)
     bot.sendMessage(
         chat_id = update.message.chat_id,
         text = str(tmp_time) + ' seconds'
