@@ -1,4 +1,7 @@
 from subprocess import Popen
+from subprocess import PIPE
+
+import time
 
 from telegram import Bot
 from telegram.ext import Updater
@@ -8,6 +11,8 @@ from telegram.ext import Filters
 
 from config import TG_TOKEN
 from config import TG_API_URL
+
+start_time = time.time()
 
 def start(bot,update):
     bot.send_message(
@@ -29,14 +34,21 @@ def echo(bot, update):
         text = text,
     )
 
-def time(bot, update):
-    print('Time called')
-    process = Popen(stdout=subprocess.PIPE)
-    data = process.communicate()
-    print(data)
-    bot.send_message(
+def cur_time(bot, update):
+    process = Popen('date',stdout=PIPE)
+    text, err = process.communicate()
+    text = text.decode('utf-8')
+    bot.sendMessage(
         chat_id = update.message.chat_id,
-        text = data
+        text = text
+    )
+
+def server_time(bot, update):
+    tmp_time = round( time.time() - start_time, 4 )
+    print(tmp_time)
+    bot.sendMessage(
+        chat_id = update.message.chat_id,
+        text = str(tmp_time) + ' seconds'
     )
 
 def main():
@@ -45,13 +57,15 @@ def main():
 
     start_handler = CommandHandler('start',start)
     help_handler = CommandHandler('help',help)
-    time_handler = CommandHandler('time',time)
+    cur_time_handler = CommandHandler('cur_time',cur_time)
+    server_time_handler = CommandHandler('server_time',server_time)
 
     message_handler = MessageHandler(Filters.text,echo)
 
     updater.dispatcher.add_handler(start_handler)
     updater.dispatcher.add_handler(help_handler)
-    updater.dispatcher.add_handler(time_handler)
+    updater.dispatcher.add_handler(cur_time_handler)
+    updater.dispatcher.add_handler(server_time_handler)
 
     updater.dispatcher.add_handler(message_handler)
 
