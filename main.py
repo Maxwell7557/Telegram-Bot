@@ -15,18 +15,21 @@ from config import TG_API_URL
 start_time = time.time()
 
 def start(bot,update):
+    print('\start')
     bot.send_message(
         chat_id = update.message.chat_id,
         text = 'Hello there!',
     )
 
 def help(bot, update):
+    print('\help')
     bot.send_message(
         chat_id = update.message.chat_id,
         text = 'There will be a full description of bot commands soon! \n'
     )
 
 def echo(bot, update):
+    print('\echo')
     chat_id = update.message.chat_id
     text = f"Your ID = {chat_id}\n\n{update.message.text}"
     bot.send_message(
@@ -38,6 +41,8 @@ def cur_time(bot, update):
     process = Popen('date',stdout=PIPE)
     text, err = process.communicate()
     text = text.decode('utf-8')
+    print('\cur_time')
+    print('>    ' + text)
     bot.sendMessage(
         chat_id = update.message.chat_id,
         text = text
@@ -45,7 +50,8 @@ def cur_time(bot, update):
 
 def server_time(bot, update):
     tmp_time = round( time.time() - start_time, 4 )
-    print(tmp_time)
+    print('\server_time')
+    print('>    ' + tmp_time + '  seconds')
     bot.sendMessage(
         chat_id = update.message.chat_id,
         text = str(tmp_time) + ' seconds'
