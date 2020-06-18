@@ -1,2 +1,3 @@
 TG_TOKEN = '785025166:AAE00r-gKKNNx9LWYTEaPBYOW3ZYAF-nBpY'
 TG_API_URL = None
+# ROOT_PATH = '/home/maxwell/Telegram-Bot/'

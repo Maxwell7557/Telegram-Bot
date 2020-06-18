@@ -10,16 +10,13 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
 from telegram.ext import Filters
 
-from config import load_config
-
-# from config import TG_TOKEN
-# from config import TG_API_URL
-import Settings.development
-import Settings.production
-import buttons
+from Settings.config import load_config
+from Chat_Features.buttons import *
 
 config = load_config()
 logger = getLogger(__name__)
+
+start_time = time.time()
 
 def debug_request(f):
     def inner (*args, **kwargs):
@@ -31,19 +28,35 @@ def debug_request(f):
             raise
     return inner
 
-start_time = time.time()
 
 @debug_request
 def start(bot,update):
-    # print('\start')
     bot.send_message(
         chat_id = update.message.chat_id,
         text = 'Hello there!',
     )
 
 @debug_request
+def keyboard(bot,update):
+    global KEYBOARD_STATE
+    KEYBOARD_STATE = False if KEYBOARD_STATE else True
+    bot.send_message(
+        chat_id = update.message.chat_id,
+        text = f'Keyboard {"enabled" if KEYBOARD_STATE else "disabled"}',
+        reply_markup = show_base_reply_keyboard() if KEYBOARD_STATE else remove_base_reply_keyboard(),
+    )
+
+# @debug_request
+# def close_keyboard(bot,update):
+#     bot.send_message(
+#         chat_id = update.message.chat_id,
+#         text = 'Keyboard disabled',
+#         reply_markup = get_base_reply_keyboard(),
+#     )
+
+
+@debug_request
 def help(bot, update):
-    # print('\help')
     bot.send_message(
         chat_id = update.message.chat_id,
         text = 'There will be a full description of bot commands soon! \n'
@@ -51,7 +64,6 @@ def help(bot, update):
 
 @debug_request
 def echo(bot, update):
-    # print('\echo')
     chat_id = update.message.chat_id
     text = update.message.text
     if text == HELP_BUTTON:
@@ -72,7 +84,6 @@ def cur_time(bot, update):
     process = Popen('date',stdout=PIPE)
     text, err = process.communicate()
     text = text.decode('utf-8')
-    # print('\cur_time')
     print('>    ' + text)
     bot.sendMessage(
         chat_id = update.message.chat_id,
@@ -82,7 +93,6 @@ def cur_time(bot, update):
 @debug_request
 def server_time(bot, update):
     tmp_time = round( time.time() - start_time, 4 )
-    # print('\server_time')
     print('>    ' + str(tmp_time) + '  seconds')
     bot.sendMessage(
         chat_id = update.message.chat_id,
@@ -97,6 +107,8 @@ def main():
     help_handler = CommandHandler('help',help)
     cur_time_handler = CommandHandler('cur_time',cur_time)
     server_time_handler = CommandHandler('server_time',server_time)
+    keyboard_handler = CommandHandler('keyboard',keyboard)
+    # close_keyboard_handler = CommandHandler('close_keyboard',close_keyboard)
 
     message_handler = MessageHandler(Filters.text,echo)
 
@@ -104,6 +116,8 @@ def main():
     updater.dispatcher.add_handler(help_handler)
     updater.dispatcher.add_handler(cur_time_handler)
     updater.dispatcher.add_handler(server_time_handler)
+    updater.dispatcher.add_handler(keyboard_handler)
+    # updater.dispatcher.add_handler(close_keyboard_handler)
 
     updater.dispatcher.add_handler(message_handler)
 
