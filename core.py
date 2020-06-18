@@ -46,15 +46,6 @@ def keyboard(bot,update):
         reply_markup = show_base_reply_keyboard() if KEYBOARD_STATE else remove_base_reply_keyboard(),
     )
 
-# @debug_request
-# def close_keyboard(bot,update):
-#     bot.send_message(
-#         chat_id = update.message.chat_id,
-#         text = 'Keyboard disabled',
-#         reply_markup = get_base_reply_keyboard(),
-#     )
-
-
 @debug_request
 def help(bot, update):
     bot.send_message(
@@ -108,8 +99,6 @@ def main():
     cur_time_handler = CommandHandler('cur_time',cur_time)
     server_time_handler = CommandHandler('server_time',server_time)
     keyboard_handler = CommandHandler('keyboard',keyboard)
-    # close_keyboard_handler = CommandHandler('close_keyboard',close_keyboard)
-
     message_handler = MessageHandler(Filters.text,echo)
 
     updater.dispatcher.add_handler(start_handler)
@@ -117,8 +106,6 @@ def main():
     updater.dispatcher.add_handler(cur_time_handler)
     updater.dispatcher.add_handler(server_time_handler)
     updater.dispatcher.add_handler(keyboard_handler)
-    # updater.dispatcher.add_handler(close_keyboard_handler)
-
     updater.dispatcher.add_handler(message_handler)
 
     updater.start_polling()
