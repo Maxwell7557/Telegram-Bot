@@ -75,7 +75,7 @@ def cur_time(bot, update):
     process = Popen('date',stdout=PIPE)
     text, err = process.communicate()
     text = text.decode('utf-8')
-    print('>    ' + text)
+    # print('>    ' + text)
     bot.sendMessage(
         chat_id = update.message.chat_id,
         text = text
@@ -84,15 +84,20 @@ def cur_time(bot, update):
 @debug_request
 def server_time(bot, update):
     tmp_time = round( time.time() - start_time, 4 )
-    print('>    ' + str(tmp_time) + '  seconds')
+    # print('>    ' + str(tmp_time) + '  seconds')
     bot.sendMessage(
         chat_id = update.message.chat_id,
         text = str(tmp_time) + ' seconds'
     )
 
 def main():
-    bot = Bot(token = config.TG_TOKEN, base_url = config.TG_API_URL,)
-    updater = Updater(bot = bot,)
+    bot = Bot(
+        token = config.TG_TOKEN,
+        # base_url = config.TG_API_URL,
+    )
+    updater = Updater(
+        bot = bot,
+    )
 
     start_handler = CommandHandler('start',start)
     help_handler = CommandHandler('help',help)
