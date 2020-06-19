@@ -11,5 +11,5 @@ def load_config():
         print(f'Loaded config \"{conf_name}\" - OK')
         return conf
     except (TypeError, ValueError, ImportError):
-        print(f'Invalid config \"{conf_name}\"')
+        print(f'Invalid to load config \"{conf_name}\"')
         sys.exit(1)

@@ -18,6 +18,12 @@ logger = getLogger(__name__)
 
 start_time = time.time()
 
+HELP_TEXT = """There will be a full description of the bot soon! \n
+/help - description of bot commands and bot's purpose
+/cur_time - displays current real time
+/serrver_time - displays current server work time
+/keyboard - enable or disable keyboard (make interaction easier)"""
+
 def debug_request(f):
     def inner (*args, **kwargs):
         try:
@@ -50,7 +56,7 @@ def keyboard(bot,update):
 def help(bot, update):
     bot.send_message(
         chat_id = update.message.chat_id,
-        text = 'There will be a full description of bot commands soon! \n'
+        text = HELP_TEXT
     )
 
 @debug_request
@@ -63,6 +69,8 @@ def echo(bot, update):
         return cur_time(bot,update)
     elif text == SERVER_TIME_BUTTON:
         return server_time(bot,update)
+    elif text == HIDE_KEYBOARD_BUTTON:
+        return keyboard(bot,update)
     else:
         reply_text = f"Your ID = {chat_id}\n\n{update.message.text}"
         bot.send_message(

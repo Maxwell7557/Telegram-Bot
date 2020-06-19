@@ -7,6 +7,7 @@ KEYBOARD_STATE = False
 HELP_BUTTON = 'Help'
 REAL_TIME_BUTTON = 'Current Time'
 SERVER_TIME_BUTTON = 'Server Time'
+HIDE_KEYBOARD_BUTTON = 'Hide Keyboard'
 
 def show_base_reply_keyboard():
     keyboard = [
@@ -14,6 +15,9 @@ def show_base_reply_keyboard():
             KeyboardButton(HELP_BUTTON),
             KeyboardButton(REAL_TIME_BUTTON),
             KeyboardButton(SERVER_TIME_BUTTON),
+        ],
+        [
+            KeyboardButton(HIDE_KEYBOARD_BUTTON),
         ],
     ]
     return ReplyKeyboardMarkup(
