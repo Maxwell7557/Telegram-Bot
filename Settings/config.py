@@ -13,3 +13,7 @@ def load_config():
     except (TypeError, ValueError, ImportError):
         print(f'Invalid to load config \"{conf_name}\"')
         sys.exit(1)
+
+def find_path():
+    project_path = os.environ.get('TG_PATH')
+    return project_path
