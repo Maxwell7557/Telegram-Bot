@@ -7,12 +7,12 @@
     /keyboard - открывает/закрывает клавиатуру, немного упрощающую взаимодействие ботом  
 
 \
-Тестовый запуск (с логами): \
+Тестовый запуск (с логами): 
 ```
 pip3 install -r requirements.txt && python3 core.py 
 ``` 
 \
-Деплой на сервере: \
+Деплой на сервере: 
 ```
 cp Deploy/Upstart/run.conf /etc/init/ 
 sudo service run restart
